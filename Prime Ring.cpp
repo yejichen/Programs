@@ -1,9 +1,10 @@
 #include<iostream>
 #include<cmath>
+#include<cstring>
 using namespace std;
 int a[10000];
-int val[10000]={0};
-int n,p,bj=0,js=0,t=0;
+int val[10000];
+int n;
 /*
 powered in 2017
 setup: 1.all the numbers in the array "value" is 0 2.input the ordered values into the array "a"
@@ -14,51 +15,61 @@ make sure you're right! GOOD LUCK ANYWAY.
 */
 void print()
 {
-	for(int i=1;i<=n-1;i++)
-	{
-		cout<<a[i]<<' ';
-	}
-	cout<<a[n];
-	cout<<endl;
-	return;
+    cout<<1;
+    for(int i=2;i<=n;i++)
+    {
+        cout<<' '<<a[i];
+    }
+    cout<<endl;
+    return;
+}
+bool prime(int x)
+{
+    int bj=0;
+    for(int j=2;j<=sqrt(x);j++)
+    {
+        if(x%j==0)
+        {
+            bj=1;
+            break;    
+        } 
+    }
+    if(bj==0) return true;
+    else return false;
 }
 void back(int x) 
 {
-	int i,j;
-	if(x>n)
-	{
-		if(a[1]==1)
-		{
-			print();
-			return;
-		}
-		else return;
-	}
-	for(i=1;i<=n;i++)
-	{
-		if(val[i]==0)
-		{
-			val[i]=1;
-			a[x]=i;
-			p=a[x]+a[x-1];
-			bj=0;
-			for(j=2;j<=sqrt(p);j++)
-			{
-				if(p%j==0)
-				{
-					bj=1;
-					break;	
-				} 
-			}
-			if(bj==0) back(x+1);
-			val[i]=0;
-		}
-	}		
+    int i;
+    if(x==n)
+    {
+        if(prime(a[n]+1)==true) print();
+        return;
+    }
+    for(i=1;i<=n;i++)
+    {
+        if(val[i]==0&&prime(a[x]+i)==true)
+        {
+            val[i]=1;
+            a[x+1]=i;
+            back(x+1);
+            val[i]=0;
+        }
+    }    
+    return;    
 }
 int main()
 {
-	cin>>n;
-	if(n%2!=1)
-		back(1);
-	return 0;
+    int t=0;
+    while(cin>>n)
+    {
+        t++;
+        cout<<"Case "<<t<<":"<<endl;
+        memset(a,0,sizeof(a));
+        memset(val,0,sizeof(val));
+        a[1]=1;
+        val[1]=1;    
+        back(1);
+        cout<<endl;
+    }
+    return 0;
 }
